@@ -15,7 +15,7 @@ You will be able to:
 
 A commonly used approach when performing deep learning on fairly small image data sets is to use pretrained networks. A pretrained network is a network which was previously ran on a large, general data set, and saved. The advantage is that the hierarchical features learned by this network can act as a generic model, and can be used for a wide variety of computer vision tasks, even if your new problem involves completely different classes of images.
 
-Recall from earlier that more general features such as edges are detected in earlier layers. Because of this, these convolution layers are highly generic and reusable. Layers that are further fown the model extract more anstract concepts, so for new data sets with very different objects to classify, you might want to use only the first layers of the model, and not the entire convolutional base.
+Recall from earlier that more general features such as edges are detected in earlier layers. Due to this, these convolution layers are highly generic and reusable. Layers that are further down the model extract more abstract concepts, so for new data sets with very different objects to classify, you might want to use only the first layers of the model, and not the entire convolutional base.
 
 ## Exampled of pretrained networks
 
