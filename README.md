@@ -8,18 +8,21 @@ In this lesson, you'll start to investigate how to use pretrained networks. Reca
 ## Objectives
 
 You will be able to:
-* Describe the concept and benefits of using pretrained networks
-* Identify methods for adapting pretrained networks to new tasks
+
+- Describe the benefits of using pretrained networks 
+- Explain how pre-trained neural networks are used for feature extraction 
+- Explain what "freezing" and "unfreezing" a layer means in a neural network 
 
 ## Why are pretrained convolutional bases useful?
 
-A commonly used approach when performing deep learning on fairly small image data sets is to use pretrained networks. A pretrained network is a network which was previously ran on a large, general data set, and saved. The advantage is that the hierarchical features learned by this network can act as a generic model, and can be used for a wide variety of computer vision tasks, even if your new problem involves completely different classes of images.
+A commonly used approach when performing deep learning on fairly small image datasets is to use pretrained networks. A pretrained network is a network which was previously ran on a large, general dataset, and saved. The advantage is that the hierarchical features learned by this network can act as a generic model, and can be used for a wide variety of computer vision tasks, even if your new problem involves completely different classes of images.
 
-Recall from earlier that more general features such as edges are detected in earlier layers. Due to this, these convolution layers are highly generic and reusable. Layers that are further down the model extract more abstract concepts, so for new data sets with very different objects to classify, you might want to use only the first layers of the model, and not the entire convolutional base.
+Recall from earlier that more general features such as edges are detected in earlier layers. Due to this, these convolution layers are highly generic and reusable. Layers that are further down the model extract more abstract concepts, so for new datasets with very different objects to classify, you might want to use only the first layers of the model, and not the entire convolutional base. 
 
-## Exampled of pretrained networks
 
-Keras has several pretrained models available. Here is a list of pretrained image classification models. All these models are available in `keras.applications` and were pretrained on the ImageNet dataset, a data set with 1.4 Million labeled images and 1,000 different classes.
+## Exampled of pretrained networks 
+
+Keras has several pretrained models available. Here is a list of pretrained image classification models. All these models are available in `keras.applications` and were pretrained on the ImageNet dataset, a dataset with 1.4 million labeled images and 1,000 different classes.
 
 - DenseNet
 - InceptionResNetV2
@@ -31,24 +34,37 @@ Keras has several pretrained models available. Here is a list of pretrained imag
 - VGG19
 - Xception
 
-You can find an overview here too: https://keras.io/applications/
+You can find an overview here too: https://keras.io/applications/ 
 
-For each of these pretrained models, you can look at their structure. You can simply import the desired pretrained model, and use it as a function with 2 arguments: `weights` and `include_top`. Use `"imagenet"` in weights in order to use the weights that were obtained when training on the ImageNet data set. You can chose to iclude the top of the model (whether or not to include the fully-connected layer at the top of the network), through the argument `include_top`. Here, we'll have a look at the structure of the MobileNet neural network. 
+For each of these pretrained models, you can look at their structure. You can simply import the desired pretrained model, and use it as a function with two arguments: `weights` and `include_top`. Use `'imagenet'` in weights in order to use the weights that were obtained when training on the ImageNet dataset. You can choose to include the top of the model (whether or not to include the fully-connected layer at the top of the network), through the argument `include_top`. Here, we'll have a look at the structure of the MobileNet neural network. 
 
 
 ```python
 from keras.applications import MobileNet
-conv_base = MobileNet(weights='imagenet',
-                  include_top = True)
+conv_base = MobileNet(weights='imagenet', 
+                      include_top=True)
 ```
 
-    /Users/matthew.mitchell/anaconda3/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
-      from ._conv import register_converters as _register_converters
     Using TensorFlow backend.
 
 
+    WARNING:tensorflow:From //anaconda3/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:74: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+    
+    WARNING:tensorflow:From //anaconda3/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:517: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+    
+    WARNING:tensorflow:From //anaconda3/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:4138: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+    
+    WARNING:tensorflow:From //anaconda3/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:174: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.
+    
+    WARNING:tensorflow:From //anaconda3/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:181: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+    
+    WARNING:tensorflow:From //anaconda3/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:1834: The name tf.nn.fused_batch_norm is deprecated. Please use tf.compat.v1.nn.fused_batch_norm instead.
+    
+    WARNING:tensorflow:From //anaconda3/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3445: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+    Instructions for updating:
+    Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
     Downloading data from https://github.com/fchollet/deep-learning-models/releases/download/v0.6/mobilenet_1_0_224_tf.h5
-    17227776/17225924 [==============================] - 2s 0us/step
+    17227776/17225924 [==============================] - 1s 0us/step
 
 
 Note that we are dealing with pretty deep and complex networks here!
@@ -243,9 +259,9 @@ conv_base.summary()
     _________________________________________________________________
     conv_preds (Conv2D)          (None, 1, 1, 1000)        1025000   
     _________________________________________________________________
-    act_softmax (Activation)     (None, 1, 1, 1000)        0         
-    _________________________________________________________________
     reshape_2 (Reshape)          (None, 1000)              0         
+    _________________________________________________________________
+    act_softmax (Activation)     (None, 1000)              0         
     =================================================================
     Total params: 4,253,864
     Trainable params: 4,231,976
@@ -254,29 +270,29 @@ conv_base.summary()
 
 
 You'll learn about two ways to use pre-trained networks: 
-- **Feature extraction**: here, you use the representations learned by a previous network to extract interesting features from new samples. These features are then run through a new classifier, which is trained from scratch.  
+- **Feature extraction**: Here, you use the representations learned by a previous network to extract interesting features from new samples. These features are then run through a new classifier, which is trained from scratch.  
   
-- **Fine-tuning**: when fine-tuning, you'll "unfreeze" a few top layers from the model and train them again together with the densely connected classifier. Note that you are changing the parts of the convolutional layers here that were used to detect the more abstract features. By doing this, you can make your model more relevant for the classification problem at hand.
+- **Fine-tuning**: When fine-tuning, you'll "unfreeze" a few top layers from the model and train them again together with the densely connected classifier. Note that you are changing the parts of the convolutional layers here that were used to detect the more abstract features. By doing this, you can make your model more relevant for the classification problem at hand.
 
-## Feature Extraction 
+## Feature Extraction  
 
 Feature extraction with convolutional neural networks means that you take the convolutional base of a pretrained network, run new data through it, and train a new classifier on top of the output (a new densely connected classifier). Why use convolutional base but *new* dense classifier? Generally, patterns learned by the convolutional layers are more generalizable.
 
-Note that, if your dataset differs a lot from the dataset used when pretraining, it might even be worth only using part of the convolutional base (see "fine-tuning")
+Note that, if your dataset differs a lot from the dataset used when pretraining, it might even be worth only using part of the convolutional base (see "fine tuning") 
 
 Also, with feature extraction, there are two ways running the model:
-- You can run the convolutional base over your dataset, save its output, then use this data as input to a standalone, densely connected network. This solution is pretty fast to run, and you need to run the convolutional base first for every input image. The problem here is, however, that you can't use data augmentation as we've seen it before.
+- You can run the convolutional base over your dataset, save its output, then use this data as input to a standalone, densely connected network. This solution is pretty fast to run, and you need to run the convolutional base first for every input image. The problem here is, however, that you can't use data augmentation as we've seen before.
 - You can extend the convolutional base by adding dense layers on top, and running everything altogether on the input data. This way, you can use data augmentation, but as every input image goes through the convolutional base every time, this technique is much more time-consuming. It's almost impossible to do this without a GPU
 
-## Fine-tuning  
+## Fine tuning  
 
-Fine tuning is similar to feature extraction in that you reuse the convolution base and retrain the dense, fully connected classifier layers to output a new prediction. In addition, fine tuning also works by retraining the frozen weights for the convolutional base. This allows these weights to be tweaked for the current scenario, hence the name. To do this, you'll freeze part of the model while tuning specific layers.
+Fine tuning is similar to feature extraction in that you reuse the convolution base and retrain the dense, fully connected classifier layers to output a new prediction. In addition, fine tuning also works by retraining the frozen weights for the convolutional base. This allows these weights to be tweaked for the current scenario, hence the name. To do this, you'll freeze part of the model while tuning specific layers. 
 
 ## Additional Resources
 
 * http://cs231n.stanford.edu/syllabus.html
 * https://www.dlology.com/blog/gentle-guide-on-how-yolo-object-localization-works-with-keras/
-* https://www.dlology.com/blog/gentle-guide-on-how-yolo-object-localization-works-with-keras-part-2/
+* https://www.dlology.com/blog/gentle-guide-on-how-yolo-object-localization-works-with-keras-part-2/ 
 
 ## Summary 
 
