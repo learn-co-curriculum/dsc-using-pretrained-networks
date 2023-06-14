@@ -1,4 +1,3 @@
-
 # Using Pretrained Networks
 
 ## Introduction
@@ -290,7 +289,7 @@ Fine tuning is similar to feature extraction in that you reuse the convolution b
 
 ## Additional Resources
 
-* http://cs231n.stanford.edu/syllabus.html
+* http://cs231n.stanford.edu/schedule.html
 * https://www.dlology.com/blog/gentle-guide-on-how-yolo-object-localization-works-with-keras/
 * https://www.dlology.com/blog/gentle-guide-on-how-yolo-object-localization-works-with-keras-part-2/ 
 
