@@ -2,7 +2,7 @@
 
 ## Introduction
   
-In this lesson, you'll start to investigate how to use pretrained networks. Recall that when training neural networks, the model is tuning a huge number of weights: several to dozens at each individual layer. Often the largest limiting factor with these models is the quality and size of the training data you have at hand. As such, adapting a pretrained model from a similar problem context that was trained on a larger dataset can lead to stronger overall models when you have limited training data. For example, in image recognition, the VGG-19 network is commonly used to improve the model performance of CNNs with limited training data. VGG-19 was trained on the ImageNet dataset which contains approximately 1.2 million images. Since the initial bottom layers of a CNN pick up small details with later layers picking up larger and larger features, the initial layers of a well trained network are applicable to other problem domains. Similar pretrained networks exist for other domains such as natural language processing as well. With that, let's take a further look at how transfer learning works in detail.
+In this lesson, you'll start to investigate how to use pretrained networks. Recall that when training neural networks, the model is tuning a huge number of weights: several to dozens at each individual layer. Often the largest limiting factor with these models is the quality and size of the training data you have at hand. As such, adapting a pretrained model from a similar problem context that was trained on a larger dataset can lead to stronger overall models when you have limited training data. For example, in image recognition, the VGG-19 network is commonly used to improve the model performance of CNNs with limited training data. VGG-19 was trained on the ImageNet dataset which contains approximately 1.2 million images. Since the initial bottom layers of a CNN pick up small details with later layers picking up larger and larger features, the initial layers of a well-trained network are applicable to other problem domains. Similar pretrained networks exist for other domains such as natural language processing as well. With that, let's take a further look at how transfer learning works in detail.
 
 ## Objectives
 
@@ -271,21 +271,21 @@ conv_base.summary()
 You'll learn about two ways to use pre-trained networks: 
 - **Feature extraction**: Here, you use the representations learned by a previous network to extract interesting features from new samples. These features are then run through a new classifier, which is trained from scratch.  
   
-- **Fine-tuning**: When fine-tuning, you'll "unfreeze" a few top layers from the model and train them again together with the densely connected classifier. Note that you are changing the parts of the convolutional layers here that were used to detect the more abstract features. By doing this, you can make your model more relevant for the classification problem at hand.
+- **Fine-tuning**: When fine-tuning, you'll "unfreeze" a few top layers from the model and train them again together with the densely connected classifier. Note that you are changing the parts of the convolutional layers here that were used to detect the more abstract features. By doing this, you can make your model more relevant to the classification problem at hand.
 
 ## Feature Extraction  
 
-Feature extraction with convolutional neural networks means that you take the convolutional base of a pretrained network, run new data through it, and train a new classifier on top of the output (a new densely connected classifier). Why use convolutional base but *new* dense classifier? Generally, patterns learned by the convolutional layers are more generalizable.
+Feature extraction with convolutional neural networks means that you take the convolutional base of a pretrained network, run new data through it, and train a new classifier on top of the output (a new densely connected classifier). Why use a convolutional base but a *new* dense classifier? Generally, patterns learned by the convolutional layers are more generalizable.
 
-Note that, if your dataset differs a lot from the dataset used when pretraining, it might even be worth only using part of the convolutional base (see "fine tuning") 
+Note that, if your dataset differs a lot from the dataset used when pretraining, it might even be worth only using part of the convolutional base (see "fine-tuning") 
 
-Also, with feature extraction, there are two ways running the model:
-- You can run the convolutional base over your dataset, save its output, then use this data as input to a standalone, densely connected network. This solution is pretty fast to run, and you need to run the convolutional base first for every input image. The problem here is, however, that you can't use data augmentation as we've seen before.
-- You can extend the convolutional base by adding dense layers on top, and running everything altogether on the input data. This way, you can use data augmentation, but as every input image goes through the convolutional base every time, this technique is much more time-consuming. It's almost impossible to do this without a GPU
+Also, with feature extraction, there are two ways to run the model:
+- You can run the convolutional base over your dataset, save its output, then use this data as input to a standalone, densely connected network. This solution is pretty fast to run, and you need to run the convolutional base first for every input image. The problem here is, however, that you can't use data augmentation, which is artificially increasing the training set by creating modified copies of a dataset using existing data.
+- You can extend the convolutional base by adding dense layers on top and running everything altogether on the input data. This way, you can use data augmentation, but as every input image goes through the convolutional base every time, this technique is much more time-consuming. It's almost impossible to do this without a GPU.
 
-## Fine tuning  
+## Fine-tuning  
 
-Fine tuning is similar to feature extraction in that you reuse the convolution base and retrain the dense, fully connected classifier layers to output a new prediction. In addition, fine tuning also works by retraining the frozen weights for the convolutional base. This allows these weights to be tweaked for the current scenario, hence the name. To do this, you'll freeze part of the model while tuning specific layers. 
+Fine-tuning is similar to feature extraction in that you reuse the convolution base and retrain the dense, fully connected classifier layers to output a new prediction. In addition, fine-tuning also works by retraining the frozen weights for the convolutional base. This allows these weights to be tweaked for the current scenario, hence the name. To do this, you'll freeze part of the model while tuning specific layers. 
 
 ## Additional Resources
 
@@ -295,4 +295,4 @@ Fine tuning is similar to feature extraction in that you reuse the convolution b
 
 ## Summary 
 
-In this lesson we introduced the concept of using pretrained neural networks as a starting point for future models. The idea is that well trained CNNs have generalized visual patterns that are transferable to new applications. For example, a previously trained model might have hidden convolutional layers that effectively identify edges, or even more complex patterns such as eyes which may have value in new domains. In the upcoming lab, we'll further explore how to implement these concepts in Keras.
+In this lesson, we introduced the concept of using pretrained neural networks as a starting point for future models. The idea is that well-trained CNNs have generalized visual patterns that are transferable to new applications. For example, a previously trained model might have hidden convolutional layers that effectively identify edges or even more complex patterns such as eyes which may have value in new domains. In the upcoming lab, we'll further explore how to implement these concepts in Keras.
